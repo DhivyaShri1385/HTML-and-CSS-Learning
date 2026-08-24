@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CSS Grid Diagram</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #1b2236;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+    }
+
+    .wrapper {
+      position: relative;
+      padding: 50px 20px 45px 75px;
+    }
+
+    /* ── Top horizontal arrow + label ── */
+    .top-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: white;
+      font-size: 17px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    .h-line { flex: 1; height: 2px; background: white; position: relative; }
+    .h-line.left::before {
+      content: '';
+      position: absolute;
+      left: -1px; top: -5px;
+      border: 6px solid transparent;
+      border-right: 10px solid white;
+    }
+    .h-line.right::after {
+      content: '';
+      position: absolute;
+      right: -1px; top: -5px;
+      border: 6px solid transparent;
+      border-left: 10px solid white;
+    }
+
+    /* ── Left vertical arrow + label ── */
+    .left-label {
+      position: absolute;
+      left: 5px;
+      top: 50px;
+      bottom: 45px;
+      width: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .v-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100%;
+      gap: 0;
+    }
+    .v-line { width: 2px; flex: 1; background: white; position: relative; }
+    .v-line.top::before {
+      content: '';
+      position: absolute;
+      top: -1px; left: -5px;
+      border: 6px solid transparent;
+      border-bottom: 10px solid white;
+    }
+    .v-line.bottom::after {
+      content: '';
+      position: absolute;
+      bottom: -1px; left: -5px;
+      border: 6px solid transparent;
+      border-top: 10px solid white;
+    }
+    .v-text {
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      color: white;
+      font-size: 14px;
+      font-weight: bold;
+      white-space: nowrap;
+      margin: 8px 0;
+    }
+
+    /* ── THE GRID ── */
+    .grid {
+      display: grid;
+      grid-template-columns: 175px 145px 150px 160px;
+      grid-template-rows: 105px 115px 110px;
+      gap: 8px;
+    }
+
+    .cell { border-radius: 5px; }
+    .green  { background: #4caf50; }
+    .red    { background: #e63030; }
+    .orange { background: #e8a020; }
+
+    /* Cell placements */
+    .c1 { grid-column: 1 / 2; grid-row: 1 / 4; }   /* Tall green — LEFT */
+    .c2 { grid-column: 2 / 4; grid-row: 1 / 2; }   /* Wide green — TOP CENTER */
+    .c3 { grid-column: 4 / 5; grid-row: 1 / 2; }   /* Red — TOP RIGHT */
+    .c4 { grid-column: 2 / 3; grid-row: 2 / 3; }   /* Orange — MID LEFT */
+    .c5 { grid-column: 3 / 4; grid-row: 2 / 3; }   /* Red — MID CENTER */
+    .c6 { grid-column: 4 / 5; grid-row: 2 / 4; }   /* Tall green — RIGHT */
+    .c7 { grid-column: 2 / 3; grid-row: 3 / 4; }   /* Red — BOTTOM LEFT */
+    .c8 { grid-column: 3 / 4; grid-row: 3 / 4; }   /* Orange — BOTTOM CENTER */
+
+    /* ── Bottom arrows ── */
+    .bottom-row {
+      position: relative;
+      height: 22px;
+      margin-top: 6px;
+    }
+    .b-arrow {
+      position: absolute;
+      bottom: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .b-stick {
+      width: 2px;
+      height: 16px;
+      background: white;
+      position: relative;
+    }
+    .b-stick::after {
+      content: '';
+      position: absolute;
+      bottom: -1px; left: -5px;
+      border: 6px solid transparent;
+      border-top: 10px solid white;
+    }
+    .b-dash {
+      position: absolute;
+      bottom: 8px;
+      height: 2px;
+      background: white;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="wrapper">
+
+    <!-- Left vertical label -->
+    <div class="left-label">
+      <div class="v-wrap">
+        <div class="v-line top"></div>
+        <span class="v-text">grid-template-row (Height)</span>
+        <div class="v-line bottom"></div>
+      </div>
+    </div>
+
+    <!-- Top label -->
+    <div class="top-label">
+      <div class="h-line left"></div>
+      grid-template-column (Width)
+      <div class="h-line right"></div>
+    </div>
+
+    <!-- Grid -->
+    <div class="grid">
+      <div class="cell green  c1"></div>
+      <div class="cell green  c2"></div>
+      <div class="cell red    c3"></div>
+      <div class="cell orange c4"></div>
+      <div class="cell red    c5"></div>
+      <div class="cell green  c6"></div>
+      <div class="cell red    c7"></div>
+      <div class="cell orange c8"></div>
+    </div>
+
+    <!-- Bottom arrows (col 2 start & col 4 start) -->
+    <div class="bottom-row">
+      <div class="b-arrow" style="left: 183px;">
+        <div class="b-stick"></div>
+      </div>
+      <div class="b-dash" style="left: 185px; width: 318px;"></div>
+      <div class="b-arrow" style="left: 499px;">
+        <div class="b-stick"></div>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>
