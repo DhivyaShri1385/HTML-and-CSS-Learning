@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Cinema Casting | Tamil Cinema</title>
+
+    <!-- Bootstrap 5.3.3 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #050505;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* =========================
+           CINEMATIC HERO
+        ========================== */
+
+        .hero {
+            min-height: 75vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(0,0,0,0.98) 0%,
+                    rgba(0,0,0,0.82) 45%,
+                    rgba(0,0,0,0.25) 100%
+                ),
+                radial-gradient(
+                    circle at 80% 50%,
+                    rgba(220,53,69,0.35),
+                    transparent 40%
+                );
+
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: #dc3545;
+            filter: blur(180px);
+            opacity: 0.12;
+            right: -200px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .cinema-label {
+            letter-spacing: 6px;
+            color: #dc3545;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .hero-title {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(45px, 7vw, 90px);
+            font-weight: 800;
+            line-height: 1;
+            margin-top: 20px;
+
+            background: linear-gradient(
+                90deg,
+                #ffffff,
+                #dc3545
+            );
+
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subtitle {
+            max-width: 600px;
+            color: #aaa;
+            font-size: 18px;
+            line-height: 1.8;
+        }
+
+        .hero-btn {
+            padding: 14px 35px;
+            border-radius: 50px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        /* =========================
+           FILM STRIP
+        ========================== */
+
+        .film-strip {
+            background: #000;
+            padding: 12px 0;
+            border-top: 1px solid #222;
+            border-bottom: 1px solid #222;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .film-text {
+            display: inline-block;
+            color: #666;
+            letter-spacing: 5px;
+            font-size: 12px;
+        }
+
+        /* =========================
+           SECTION
+        ========================== */
+
+        .section-title {
+            font-family: 'Cinzel', serif;
+            font-size: 40px;
+            font-weight: 700;
+        }
+
+        .section-title span {
+            color: #dc3545;
+        }
+
+        .section-line {
+            width: 80px;
+            height: 4px;
+            background: #dc3545;
+            margin: 15px auto 50px;
+            border-radius: 10px;
+        }
+
+        /* =========================
+           ACTOR CARD
+        ========================== */
+
+        .actor-card {
+            position: relative;
+            background: #0b0b0b;
+            border: 1px solid #222;
+            border-radius: 18px;
+            overflow: hidden;
+
+            transition:
+                transform 0.5s cubic-bezier(0.175,0.885,0.32,1.275),
+                box-shadow 0.5s ease,
+                border 0.3s ease;
+        }
+
+        .actor-card:hover {
+            transform: translateY(-15px) scale(1.015);
+
+            border-color: rgba(220,53,69,0.7);
+
+            box-shadow:
+                0 25px 70px rgba(220,53,69,0.18),
+                0 0 30px rgba(220,53,69,0.08);
+        }
+
+        .card-img-container {
+            height: 480px;
+            overflow: hidden;
+            position: relative;
+            background: #111;
+        }
+
+        .card-img-container::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+
+            background:
+                linear-gradient(
+                    to top,
+                    #0b0b0b 0%,
+                    transparent 45%
+                );
+        }
+
+        .card-img-top {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center top;
+
+            transition: transform 0.8s ease;
+        }
+
+        .actor-card:hover .card-img-top {
+            transform: scale(1.08);
+        }
+
+        /* Actor Badge */
+
+        .actor-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+
+            z-index: 5;
+
+            background: rgba(220,53,69,0.9);
+            backdrop-filter: blur(8px);
+
+            padding: 9px 16px;
+            border-radius: 30px;
+
+            font-size: 11px;
+            letter-spacing: 1px;
+        }
+
+        /* Card Content */
+
+        .actor-name {
+            font-family: 'Cinzel', serif;
+            font-size: 25px;
+            font-weight: 700;
+        }
+
+        .actor-role {
+            color: #dc3545;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .actor-description {
+            color: #777;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        /* =========================
+           BUTTON
+        ========================== */
+
+        .cast-btn {
+            border-radius: 50px;
+            padding: 12px 20px;
+
+            transition: all 0.3s ease;
+        }
+
+        .cast-btn:hover {
+            background: #dc3545;
+            color: white;
+
+            box-shadow:
+                0 0 25px rgba(220,53,69,0.45);
+        }
+
+        /* =========================
+           COUNTER
+        ========================== */
+
+        .counter-box {
+            background: linear-gradient(
+                145deg,
+                #151515,
+                #080808
+            );
+
+            border: 1px solid #252525;
+            border-radius: 18px;
+
+            padding: 25px 35px;
+
+            box-shadow:
+                inset 0 0 30px rgba(255,255,255,0.02);
+        }
+
+        .counter-number {
+            font-family: 'Cinzel', serif;
+            font-size: 45px;
+            color: #dc3545;
+            font-weight: 800;
+        }
+
+        /* =========================
+           MODAL
+        ========================== */
+
+        .cinema-modal {
+            background:
+                linear-gradient(
+                    145deg,
+                    #141414,
+                    #050505
+                );
+
+            border: 1px solid #333;
+            border-radius: 20px;
+
+            box-shadow:
+                0 30px 100px rgba(0,0,0,0.8);
+        }
+
+        .modal-icon {
+            font-size: 60px;
+        }
+
+        /* =========================
+           FOOTER
+        ========================== */
+
+        footer {
+            background: #000;
+            border-top: 1px solid #1d1d1d;
+        }
+
+        .footer-logo {
+            font-family: 'Cinzel', serif;
+            letter-spacing: 3px;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================== */
+
+        @media (max-width: 768px) {
+
+            .hero {
+                min-height: 65vh;
+                text-align: center;
+            }
+
+            .hero-subtitle {
+                margin: auto;
+            }
+
+            .card-img-container {
+                height: 420px;
+            }
+
+            .section-title {
+                font-size: 32px;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+
+<!-- =================================
+     HERO SECTION
+================================= -->
+
+<section class="hero">
+
+    <div class="container hero-content">
+
+        <div class="row">
+
+            <div class="col-lg-8">
+
+                <div class="cinema-label">
+                    CINEMA • ACTION • LEGENDS
+                </div>
+
+                <h1 class="hero-title">
+                    CINEMA<br>
+                    CASTING
+                </h1>
+
+                <p class="hero-subtitle mt-4">
+                    Build your next blockbuster with the icons who
+                    define Tamil cinema. Select your stars and create
+                    the ultimate movie lineup.
+                </p>
+
+                <div class="mt-4">
+
+                    <a href="#actors"
+                       class="btn btn-danger hero-btn me-2">
+
+                        🎬 Explore Stars
+
+                    </a>
+
+                    <button
+                        class="btn btn-outline-light hero-btn"
+                        data-bs-toggle="modal"
+                        data-bs-target="#aboutModal">
+
+                        About Project
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =================================
+     FILM STRIP
+================================= -->
+
+<div class="film-strip">
+
+    <div class="container text-center">
+
+        <span class="film-text">
+
+            ★ ACTION ★ DRAMA ★ THRILLER ★ BLOCKBUSTER ★
+            ACTION ★ DRAMA ★ THRILLER ★ BLOCKBUSTER ★
+
+        </span>
+
+    </div>
+
+</div>
+
+
+<!-- =================================
+     MAIN CONTENT
+================================= -->
+
+<section id="actors" class="py-5">
+
+    <div class="container py-5">
+
+        <!-- SECTION HEADER -->
+
+        <div class="text-center mb-5">
+
+            <div class="cinema-label">
+                THE STARS
+            </div>
+
+            <h2 class="section-title mt-2">
+                Choose Your <span>Lead</span>
+            </h2>
+
+            <div class="section-line"></div>
+
+        </div>
+
+
+        <!-- ACTOR CARDS -->
+
+        <div class="row g-4">
+
+
+            <!-- AJITH -->
+
+            <div class="col-12 col-md-6 col-lg-4">
+
+                <div class="card actor-card h-100 text-white">
+
+                    <div class="card-img-container">
+
+                        <img
+                            src="AK.jpg"
+                            class="card-img-top"
+                            alt="Ajith Kumar">
+
+                        <span class="actor-badge">
+                            PRO RACER
+                        </span>
+
+                    </div>
+
+
+                    <div class="card-body p-4">
+
+                        <div class="actor-role">
+                            Action Superstar
+                        </div>
+
+                        <h3 class="actor-name mt-2">
+                            Ajith Kumar
+                        </h3>
+
+                        <p class="actor-description">
+
+                            Known for high-speed racing,
+                            powerful action sequences,
+                            and intense screen presence.
+
+                        </p>
+
+                        <button
+                            onclick="addMovie('Ajith Kumar')"
+                            class="btn btn-outline-danger cast-btn w-100">
+
+                            🎬 Cast Ajith
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- VIJAY -->
+
+            <div class="col-12 col-md-6 col-lg-4">
+
+                <div class="card actor-card h-100 text-white">
+
+                    <div class="card-img-container">
+
+                        <img
+                            src="LEO _ THALAPATHY VIJAY.jpg"
+                            class="card-img-top"
+                            alt="Thalapathy Vijay">
+
+                        <span class="actor-badge">
+                            MASS ICON
+                        </span>
+
+                    </div>
+
+
+                    <div class="card-body p-4">
+
+                        <div class="actor-role">
+                            People's Star
+                        </div>
+
+                        <h3 class="actor-name mt-2">
+                            Thalapathy Vijay
+                        </h3>
+
+                        <p class="actor-description">
+
+                            A charismatic screen icon known
+                            for energetic performances,
+                            dance, action and mass appeal.
+
+                        </p>
+
+                        <button
+                            onclick="addMovie('Thalapathy Vijay')"
+                            class="btn btn-outline-danger cast-btn w-100">
+
+                            🎬 Cast Vijay
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- SURIYA -->
+
+            <div class="col-12 col-md-6 col-lg-4">
+
+                <div class="card actor-card h-100 text-white">
+
+                    <div class="card-img-container">
+
+                        <img
+                            src="Retro Movie Suriya HD Poster.jpg"
+                            class="card-img-top"
+                            alt="Suriya Sivakumar">
+
+                        <span class="actor-badge">
+                            VERSATILE
+                        </span>
+
+                    </div>
+
+
+                    <div class="card-body p-4">
+
+                        <div class="actor-role">
+                            Performer
+                        </div>
+
+                        <h3 class="actor-name mt-2">
+                            Suriya Sivakumar
+                        </h3>
+
+                        <p class="actor-description">
+
+                            A versatile performer celebrated
+                            for powerful transformations,
+                            emotional depth and intense roles.
+
+                        </p>
+
+                        <button
+                            onclick="addMovie('Suriya Sivakumar')"
+                            class="btn btn-outline-danger cast-btn w-100">
+
+                            🎬 Cast Suriya
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- COUNTER -->
+
+        <div class="row justify-content-center mt-5 pt-5">
+
+            <div class="col-md-6 col-lg-4">
+
+                <div class="counter-box text-center">
+
+                    <div class="text-uppercase text-secondary small">
+                        Total Stars Cast
+                    </div>
+
+                    <div
+                        id="global-counter"
+                        class="counter-number">
+
+                        0
+
+                    </div>
+
+                    <div class="text-secondary small">
+                        Movie project selections
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =================================
+     SUCCESS MODAL
+================================= -->
+
+<div
+    class="modal fade"
+    id="successModal"
+    tabindex="-1">
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content cinema-modal text-white">
+
+            <div class="modal-body text-center p-5">
+
+                <div class="modal-icon">
+                    🎬
+                </div>
+
+                <h2 class="fw-bold mt-3">
+                    CAST CONFIRMED
+                </h2>
+
+                <p class="text-secondary mt-3">
+                    <span id="selectedActor"></span>
+                    has officially been added to your movie project.
+                </p>
+
+                <div class="mt-4">
+
+                    <button
+                        class="btn btn-danger rounded-pill px-4"
+                        data-bs-dismiss="modal">
+
+                        Continue Casting
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =================================
+     ABOUT MODAL
+================================= -->
+
+<div
+    class="modal fade"
+    id="aboutModal"
+    tabindex="-1">
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content cinema-modal text-white">
+
+            <div class="modal-body p-5">
+
+                <div class="cinema-label">
+                    CINEMA CASTING PANEL
+                </div>
+
+                <h2 class="fw-bold mt-2">
+                    Build Your Blockbuster
+                </h2>
+
+                <p class="text-secondary mt-3">
+
+                    Select your favourite stars and create
+                    your ultimate cinematic lineup.
+
+                    This interactive dashboard demonstrates
+                    Bootstrap components, responsive layouts,
+                    JavaScript interactions and cinematic UI design.
+
+                </p>
+
+                <button
+                    class="btn btn-outline-danger rounded-pill px-4"
+                    data-bs-dismiss="modal">
+
+                    Let's Cast 🎬
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =================================
+     FOOTER
+================================= -->
+
+<footer class="py-5">
+
+    <div class="container text-center">
+
+        <div class="footer-logo text-danger fs-4">
+            CINEMA CASTING
+        </div>
+
+        <p class="text-secondary small mt-2 mb-0">
+            Create • Cast • Celebrate Cinema
+        </p>
+
+    </div>
+
+</footer>
+
+
+<!-- Bootstrap JS -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+</script>
+
+
+<!-- =================================
+     JAVASCRIPT
+================================= -->
+
+<script>
+
+    let totalCount = 0;
+
+    function addMovie(actorName) {
+
+        totalCount++;
+
+        document.getElementById("global-counter").innerText =
+            totalCount;
+
+        document.getElementById("selectedActor").innerText =
+            actorName;
+
+        const modal =
+            new bootstrap.Modal(
+                document.getElementById("successModal")
+            );
+
+        modal.show();
+
+    }
+
+</script>
+
+
+</body>
+
+</html>
